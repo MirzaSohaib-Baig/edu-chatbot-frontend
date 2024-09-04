@@ -19,7 +19,7 @@ To get started with EDU Chatbot Frontend, follow these steps:
 Clone the repository:
 
 ```bash
-git clone https://github.com/edu-chatbot-frontend.git
+git clone https://github.com/MirzaSohaib-Baig/edu-chatbot-frontend.git
 ```
 
 Install dependencies:
