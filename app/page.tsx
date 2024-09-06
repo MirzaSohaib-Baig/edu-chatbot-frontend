@@ -408,7 +408,7 @@ export default function Chat(props: { apiKeyApp: string }) {
           alignItems="center"
         >
           <Text fontSize="xs" textAlign="center" color={gray}>
-            EDU-Chatbot can make mistakes. Check important info.
+          AI Genius can make mistakes. Check important info.
           </Text>
         </Flex>
       </Flex>

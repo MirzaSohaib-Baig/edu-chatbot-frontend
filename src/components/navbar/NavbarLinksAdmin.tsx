@@ -16,7 +16,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { SearchBar } from '@/components/navbar/searchBar/SearchBar';
-// import { SidebarResponsive } from '@/components/sidebar/Sidebar';
+import { SidebarResponsive } from '@/components/sidebar/Sidebar';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { MdInfoOutline } from 'react-icons/md';
 import APIModal from '@/components/apiModal';
@@ -61,8 +61,8 @@ export default function HeaderLinks(props: {
       boxShadow={shadow}
     >
       
-      {/* <SidebarResponsive routes={routes} />
-      <APIModal setApiKey={setApiKey} /> */}
+      <SidebarResponsive routes={routes} />
+      {/* <APIModal setApiKey={setApiKey} /> */}
 {/* 
       <Menu>
         <MenuButton p="0px">
