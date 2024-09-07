@@ -3,7 +3,7 @@
 
 import Link from '@/components/link/Link';
 import MessageBoxChat from '@/components/MessageBox';
-import { ChatBody, OpenAIModel } from '@/types/types';
+// import { ChatBody, OpenAIModel } from '@/types/types';
 import {
   Accordion,
   AccordionButton,
@@ -19,6 +19,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { resolve } from 'path';
 import { useEffect, useState } from 'react';
 import { MdAutoAwesome, MdBolt, MdEdit, MdPerson } from 'react-icons/md';
 import Bg from '../public/img/chat/bg-image.png';
@@ -30,7 +31,7 @@ export default function Chat(props: { apiKeyApp: string }) {
   // Response message
   const [outputCode, setOutputCode] = useState<string>('');
   // ChatGPT model
-  const [model, setModel] = useState<OpenAIModel>('gpt-4o');
+  // const [model, setModel] = useState<OpenAIModel>('gpt-4o');
   // Loading state
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -56,16 +57,16 @@ export default function Chat(props: { apiKeyApp: string }) {
     { color: 'whiteAlpha.600' },
   );
   const handleTranslate = async () => {
-    let apiKey = localStorage.getItem('apiKey');
+    // let apiKey = localStorage.getItem('apiKey');
     setInputOnSubmit(inputCode);
 
     // Chat post conditions(maximum number of characters, valid message etc.)
-    const maxCodeLength = model === 'gpt-4o' ? 700 : 700;
+    const maxCodeLength =  700;
 
-    if (!apiKey?.includes('sk-')) {
-      alert('Please enter an API key.');
-      return;
-    }
+    // if (!apiKey?.includes('sk-')) {
+    //   alert('Please enter an API key.');
+    //   return;
+    // }
 
     if (!inputCode) {
       alert('Please enter your message.');
@@ -81,20 +82,37 @@ export default function Chat(props: { apiKeyApp: string }) {
     setOutputCode(' ');
     setLoading(true);
     const controller = new AbortController();
-    const body: ChatBody = {
-      inputCode,
-      model,
-      apiKey,
-    };
+    // const body: ChatBody = {
+    //   inputCode,
+    //   model,
+    //   apiKey,
+    // };
 
     // -------------- Fetch --------------
-    const response = await fetch('./api/chatAPI', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: controller.signal,
-      body: JSON.stringify(body),
+    // const response = await fetch('./api/chatAPI', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   signal: controller.signal,
+    //   body: JSON.stringify(body),
+    // });
+
+    // Simulating a response with a readable stream
+    const response = await new Promise<{ ok: boolean; body: ReadableStream<Uint8Array> }>((resolve) => {
+      setTimeout(() => {
+        const message = "Hello, I am AI Genius ready to assist you. How can I help you?";
+        const stream = new ReadableStream({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode(message));
+            controller.close();
+          },
+        });
+        resolve({
+          ok: true,
+          body: stream,
+        });
+      }, 1000);
     });
 
     if (!response.ok) {
@@ -129,6 +147,13 @@ export default function Chat(props: { apiKeyApp: string }) {
 
     setLoading(false);
   };
+
+  const handleKeyDown = (e:any)=>{
+    if (e.key === 'Enter') {
+      e.preventDefault();
+        handleTranslate();
+      }
+};
   // -------------- Copy Response --------------
   // const copyToClipboard = (text: string) => {
   //   const el = document.createElement('textarea');
@@ -376,6 +401,7 @@ export default function Chat(props: { apiKeyApp: string }) {
             _placeholder={placeholderColor}
             placeholder="Type your message here..."
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
           <Button
             variant="primary"
