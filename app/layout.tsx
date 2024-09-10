@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AppWrappers>
           {/* <ChakraProvider theme={theme}> */}
             <Box>
-              <Sidebar setApiKey={setApiKey} routes={routes} onSidebarOpen={onOpen} />
+              <Sidebar setApiKey={setApiKey} routes={routes} />
               <Box
                 pt={{ base: '60px', md: '100px' }}
                 float="right"
@@ -71,9 +71,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   {children}
                   {/* <Component apiKeyApp={apiKey} {...pageProps} /> */}
                 </Box>
-                <Box>
-                  {/* <Footer /> */}
-                </Box>
+                {/* <Box>
+                  <Footer />
+                </Box> */}
               </Box>
             </Box>
           

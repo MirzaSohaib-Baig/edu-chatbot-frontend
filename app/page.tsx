@@ -23,11 +23,13 @@ import { resolve } from 'path';
 import { useEffect, useState } from 'react';
 import { MdAutoAwesome, MdBolt, MdEdit, MdPerson } from 'react-icons/md';
 import Bg from '../public/img/chat/bg-image.png';
+import { getChats } from './api/chatAPI/route';
 
 export default function Chat(props: { apiKeyApp: string }) {
   // Input States
   const [inputOnSubmit, setInputOnSubmit] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
+  const senderId = 'user';
   // Response message
   const [outputCode, setOutputCode] = useState<string>('');
   // ChatGPT model
@@ -59,6 +61,7 @@ export default function Chat(props: { apiKeyApp: string }) {
   const handleTranslate = async () => {
     // let apiKey = localStorage.getItem('apiKey');
     setInputOnSubmit(inputCode);
+    // setInputCode('');
 
     // Chat post conditions(maximum number of characters, valid message etc.)
     const maxCodeLength =  700;
@@ -89,19 +92,15 @@ export default function Chat(props: { apiKeyApp: string }) {
     // };
 
     // -------------- Fetch --------------
-    // const response = await fetch('./api/chatAPI', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   signal: controller.signal,
-    //   body: JSON.stringify(body),
-    // });
+    const botresponse = await getChats(senderId, inputCode);
+
+    console.log('response', botresponse[0].text);
+    
 
     // Simulating a response with a readable stream
     const response = await new Promise<{ ok: boolean; body: ReadableStream<Uint8Array> }>((resolve) => {
       setTimeout(() => {
-        const message = "Hello, I am AI Genius ready to assist you. How can I help you?";
+        const message = botresponse[0].text;
         const stream = new ReadableStream({
           start(controller) {
             controller.enqueue(new TextEncoder().encode(message));
