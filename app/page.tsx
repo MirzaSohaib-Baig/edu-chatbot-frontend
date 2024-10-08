@@ -27,6 +27,12 @@ import { getChats } from './api/chatAPI/route';
 
 export default function Chat(props: { apiKeyApp: string }) {
   // Input States
+  const prompts = [
+    {question:'List down top 10 institutes'},
+    {question:'What is the derivative of x^2?'},
+    {question:'Courses offered by Oxford?'},
+
+  ]
   const [inputOnSubmit, setInputOnSubmit] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
   const senderId = 'user';
@@ -101,6 +107,7 @@ export default function Chat(props: { apiKeyApp: string }) {
     const response = await new Promise<{ ok: boolean; body: ReadableStream<Uint8Array> }>((resolve) => {
       setTimeout(() => {
         const message = botresponse[0].text;
+        // const message = `Rearranging the equation: $$2x = 7 - 3$$, then divide both sides by 2 to get $$x = 2$$.`;
         const stream = new ReadableStream({
           start(controller) {
             controller.enqueue(new TextEncoder().encode(message));
@@ -153,6 +160,13 @@ export default function Chat(props: { apiKeyApp: string }) {
         handleTranslate();
       }
 };
+
+const handleSend = (val:any)=>{
+  setInputCode(val?.question)
+  handleTranslate();
+  console.log(val?.question);
+  
+};
   // -------------- Copy Response --------------
   // const copyToClipboard = (text: string) => {
   //   const el = document.createElement('textarea');
@@ -200,80 +214,40 @@ export default function Chat(props: { apiKeyApp: string }) {
       >
         {/* Model Change */}
         <Flex direction={'column'} w="100%" mb={outputCode ? '20px' : 'auto'}>
-          {/* <Flex
+          <Flex
             mx="auto"
             zIndex="2"
             w="max-content"
             mb="20px"
             borderRadius="60px"
+            // Use a grid layout instead of a flex layout
+            display="grid"
+            gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} // 1 column on small screens, 2 on medium and above
+            gridGap="30px" // Space between grid items
           >
-            <Flex
+            {prompts.map((prompt) => (
+              <Flex
               cursor={'pointer'}
               transition="0.3s"
               justify={'center'}
               align="center"
-              bg={model === 'gpt-4o' ? buttonBg : 'transparent'}
-              w="174px"
+              bg={buttonBg}
+              // bg={'transparent'}
+              w="290px"
               h="70px"
-              boxShadow={model === 'gpt-4o' ? buttonShadow : 'none'}
+              boxShadow={buttonShadow}
+              // boxShadow={'none'}
               borderRadius="14px"
               color={textColor}
               fontSize="18px"
               fontWeight={'700'}
-              onClick={() => setModel('gpt-4o')}
+              onClick={() => handleSend(prompt)}
             >
-              <Flex
-                borderRadius="full"
-                justify="center"
-                align="center"
-                bg={bgIcon}
-                me="10px"
-                h="39px"
-                w="39px"
-              >
-                <Icon
-                  as={MdAutoAwesome}
-                  width="20px"
-                  height="20px"
-                  color={iconColor}
-                />
-              </Flex>
-              GPT-4o
+              {prompt?.question}
             </Flex>
-            <Flex
-              cursor={'pointer'}
-              transition="0.3s"
-              justify={'center'}
-              align="center"
-              bg={model === 'gpt-3.5-turbo' ? buttonBg : 'transparent'}
-              w="164px"
-              h="70px"
-              boxShadow={model === 'gpt-3.5-turbo' ? buttonShadow : 'none'}
-              borderRadius="14px"
-              color={textColor}
-              fontSize="18px"
-              fontWeight={'700'}
-              onClick={() => setModel('gpt-3.5-turbo')}
-            >
-              <Flex
-                borderRadius="full"
-                justify="center"
-                align="center"
-                bg={bgIcon}
-                me="10px"
-                h="39px"
-                w="39px"
-              >
-                <Icon
-                  as={MdBolt}
-                  width="20px"
-                  height="20px"
-                  color={iconColor}
-                />
-              </Flex>
-              GPT-3.5
-            </Flex>
-          </Flex> */}
+            ))}
+            
+          </Flex>
 
           {/* <Accordion color={gray} allowToggle w="100%" my="0px" mx="auto">
             <AccordionItem border="none">

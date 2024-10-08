@@ -180,7 +180,7 @@ export default function HeaderLinks(props: {
           />
           <Center top={0} left={0} position={'absolute'} w={'100%'} h={'100%'}>
             <Text fontSize={'xs'} fontWeight="bold" color={'white'}>
-              AP
+              SB
             </Text>
           </Center>
         </MenuButton>
@@ -204,7 +204,7 @@ export default function HeaderLinks(props: {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hey, Sohaib
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">
